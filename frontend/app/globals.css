@@ -1,0 +1,106 @@
+@import "tailwindcss";
+
+/* Background Colors */
+.bg-greenBackgroundTransparent {
+  background-color: rgba(0,194,120,.12);
+}
+
+.bg-redBackgroundTransparent {
+  background-color: rgba(234,56,59,.12);
+}
+
+.bg-baseBackgroundL2 {
+  background-color: rgb(32,33,39);
+}
+
+.bg-baseBackgroundL3 {
+  background-color: rgb(32,33,39);
+}
+
+.bg-greenPrimaryButtonBackground {
+  background-color: rgb(0,194,120);
+}
+
+/* Border Colors */
+.border-redBorder {
+  border-color: rgba(234,56,59,.5);
+}
+
+.border-greenBorder {
+  border-color: rgba(0,194,120,.4);
+}
+
+.border-baseBorderMed {
+  border-color: #cccccc;
+}
+
+.border-accentBlue {
+  border-color: rgb(76,148,255);
+}
+
+.border-baseBorderLight {
+  border-color: rgb(32,33,39);
+}
+
+.border-baseTextHighEmphasis {
+  border-color: rgb(244,244,246);
+}
+
+/* Better border for navbar */
+.border-navbarBorder {
+  border-color: rgba(244,244,246,.15);
+}
+
+/* Text Colors */
+.text-greenPrimaryButtonText {
+  color: rgb(20,21,27);
+}
+
+.text-baseTextHighEmphasis {
+  color: rgb(244,244,246);
+}
+
+.text-baseTextMedEmphasis {
+  color: rgba(244,244,246,.7);
+}
+
+.text-baseTextLowEmphasis {
+  color: rgba(244,244,246,.5);
+}
+
+.text-accentBlue {
+  color: rgb(76,148,255);
+}
+
+.text-greenAccent {
+  color: rgb(0,194,120);
+}
+
+/* Font Sizes */
+.text-xs {
+  font-size: 0.7rem;
+}
+
+.text-sm {
+  font-size: 0.8rem;
+}
+
+/* Background Images */
+.bg-gradient-radial {
+  background-image: radial-gradient(var(--tw-gradient-stops));
+}
+
+.bg-gradient-conic {
+  background-image: conic-gradient(from 180deg at 50% 50%, var(--tw-gradient-stops));
+}
+
+/* Hover effects */
+.hover-text-accent:hover {
+  color: rgb(0,194,120);
+  transition: color 0.2s ease;
+}
+
+.hover-text-blue:hover {
+  color: rgb(76,148,255);
+  transition: color 0.2s ease;
+}
