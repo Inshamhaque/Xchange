@@ -9,12 +9,14 @@
   background-color: rgba(234,56,59,.12);
 }
 
-.bg-baseBackgroundL2 {
+/* for boxes */
+.bg-baseBackgroundL3 {
   background-color: rgb(32,33,39);
 }
 
-.bg-baseBackgroundL3 {
-  background-color: rgb(32,33,39);
+/* for background */
+.bg-baseBackgroundL2 {
+  background-color: rgb(27, 28, 35);
 }
 
 .bg-greenPrimaryButtonBackground {
@@ -39,7 +41,7 @@
 }
 
 .border-baseBorderLight {
-  border-color: rgb(32,33,39);
+  border-color: rgb(49, 50, 56);
 }
 
 .border-baseTextHighEmphasis {
