@@ -9,7 +9,7 @@ import {
 export class ChartManager {
   private candleSeries: ISeriesApi<"Candlestick">;
   private lastUpdateTime: number = 0;
-  private chart: ReturnType<typeof createLightWeightChart>;
+  private chart: any;
   private currentBar: {
     open: number | null;
     high: number | null;
@@ -23,18 +23,16 @@ export class ChartManager {
   };
 
   constructor(
-    ref: HTMLDivElement,
-    initialData: {
-      timestamp: number;
-      open: number;
-      high: number;
-      low: number;
-      close: number;
-    }[],
+    ref: any,
+    initialData: any[],
     layout: { background: string; color: string }
   ) {
-    this.chart = createLightWeightChart(ref, {
+    const chart = createLightWeightChart(ref, {
       autoSize: true,
+      overlayPriceScales: {
+        ticksVisible: true,
+        borderVisible: true,
+      },
       crosshair: {
         mode: CrosshairMode.Normal,
       },
@@ -44,60 +42,48 @@ export class ChartManager {
         entireTextOnly: true,
       },
       grid: {
-        horzLines: { visible: false },
-        vertLines: { visible: false },
+        horzLines: {
+          visible: false,
+        },
+        vertLines: {
+          visible: false,
+        },
       },
       layout: {
-        background: { type: ColorType.Solid, color: layout.background },
-        textColor: layout.color,
+        background: {
+          type: ColorType.Solid,
+          color: layout.background,
+        },
+        textColor: "white",
       },
     });
-
-    this.candleSeries = this.chart.addCandlestickSeries({
-      upColor: "#4ade80",
-      borderUpColor: "#4ade80",
-      wickUpColor: "#4ade80",
-      downColor: "#ef4444",
-      borderDownColor: "#ef4444",
-      wickDownColor: "#ef4444",
-    });
+    this.chart = chart;
+    this.candleSeries = chart.addCandlestickSeries();
 
     this.candleSeries.setData(
-      initialData.map((d) => ({
-        time: (d.timestamp / 1000) as UTCTimestamp,
-        open: d.open,
-        high: d.high,
-        low: d.low,
-        close: d.close,
+      initialData.map((data) => ({
+        ...data,
+        time: (data.timestamp / 1000) as UTCTimestamp,
       }))
     );
   }
-
-  public update(updatedPrice: {
-    time: number;
-    open: number;
-    high: number;
-    low: number;
-    close: number;
-    newCandleInitiated?: boolean;
-  }) {
+  public update(updatedPrice: any) {
     if (!this.lastUpdateTime) {
-      this.lastUpdateTime = updatedPrice.time;
+      this.lastUpdateTime = new Date().getTime();
     }
 
     this.candleSeries.update({
       time: (this.lastUpdateTime / 1000) as UTCTimestamp,
-      open: updatedPrice.open,
-      high: updatedPrice.high,
-      low: updatedPrice.low,
       close: updatedPrice.close,
+      low: updatedPrice.low,
+      high: updatedPrice.high,
+      open: updatedPrice.open,
     });
 
     if (updatedPrice.newCandleInitiated) {
       this.lastUpdateTime = updatedPrice.time;
     }
   }
-
   public destroy() {
     this.chart.remove();
   }

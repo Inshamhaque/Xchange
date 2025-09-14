@@ -1,9 +1,9 @@
-import CandleChart from "./TradingView/Chart"
+import { TradeView as CandleChart } from "./TradingView/Chart"
 
 export const TradeView = ()=>{
     return(
         <div>
-            <CandleChart />
+            <CandleChart market="SOL_USDC" />
         </div>
     )
 }

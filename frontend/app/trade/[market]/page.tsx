@@ -6,7 +6,7 @@ import { Depth } from "@/app/components/Depth";
 import { useParams } from "next/navigation";
 
 export default function Page() {
-    const { market } = useParams();
+    const { market } = useParams() || "SOL_USDC";
 
     return <div className=" bg-baseBackgroundL3 h-screen flex flex-row flex-1">
         <div className="flex flex-col flex-1">

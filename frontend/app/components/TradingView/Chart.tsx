@@ -1,58 +1,55 @@
-"use client";
-
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef } from "react";
 import { ChartManager } from "./ChartManager";
 import { getKlines } from "../utils/httpClient";
+import { Klines } from "../utils/types";
 
-export default function CandleChart() {
+export function TradeView({
+  market,
+}: {
+  market: string;
+}) {
   const chartRef = useRef<HTMLDivElement>(null);
-  const chartInstance = useRef<ChartManager | null>(null);
-  const [isMounted, setIsMounted] = useState(false);
-  const [loading, setLoading] = useState(true);
+  const chartManagerRef = useRef<ChartManager>(null);
+  console.log(chartRef);
+  const init = async () => {
+    let klineData: Klines[] = [];
+    try {
+      klineData = await getKlines(); 
+      console.log("klineData from the Chart component: ",klineData);
+    } catch (e) { }
 
-  // Set mounted after component is rendered on client
-  useEffect(() => {
-    setIsMounted(true);
-  }, []);
-
-  useEffect(() => {
-    if (!isMounted || !chartRef.current) return; // wait for div to mount
-
-    let isActive = true;
-
-    async function loadData() {
-      try {
-        const res = await getKlines();
-        if (!res || !res.klines || !isActive) return;
-
-        const formattedData = res.klines.map((d: any) => ({
-          time: Math.floor(new Date(d.start).getTime() / 1000),
-          open: parseFloat(d.open),
-          high: parseFloat(d.high),
-          low: parseFloat(d.low),
-          close: parseFloat(d.close),
-        }));
-
-        chartInstance.current = new ChartManager(chartRef.current!, formattedData, {
-          background: "#0f172a",
-          color: "white",
-        });
-
-        setLoading(false);
-      } catch (err) {
-        console.error("Error loading candles:", err);
+    if (chartRef) {
+      if (chartManagerRef.current) {
+        chartManagerRef.current.destroy();
       }
+      const chartManager = new ChartManager(
+        chartRef.current,
+        [
+          ...klineData?.map((x) => ({
+            close: parseFloat(x.close),
+            high: parseFloat(x.high),
+            low: parseFloat(x.low),
+            open: parseFloat(x.open),
+            timestamp: new Date(x.end), 
+          })),
+        ].sort((x, y) => (x.timestamp < y.timestamp ? -1 : 1)) || [],
+        {
+          background: "#0e0f14",
+          color: "white",
+        }
+      );
+      //@ts-ignore
+      chartManagerRef.current = chartManager;
     }
+  };
 
-    loadData();
+  useEffect(() => {
+      init();
+  }, [market, chartRef]);
 
-    return () => {
-      isActive = false;
-      chartInstance.current?.destroy();
-    };
-  }, [isMounted]); // only run after mount
-
-  if (loading) return <div className="text-white p-4">Loading chart...</div>;
-
-  return <div ref={chartRef} style={{ width: "100%", height: "600px" }} />;
+  return (
+    <>
+      <div ref={chartRef} style={{ height: "520px", width: "100%", marginTop: 4 }}></div>
+    </>
+  );
 }

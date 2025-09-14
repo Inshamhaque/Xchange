@@ -13,7 +13,7 @@ export async function getKlines() {
     });
     console.log(response.data);
 
-    return response.data; 
+    return response.data.klines; 
   } catch (error) {
     console.error("Error fetching klines:", error);
     return null;
